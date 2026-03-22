@@ -713,6 +713,14 @@ export const makeSourceMachine = (params: {
           }).then((res) => res.data);
         },
         loadSourceContent: (ctx) => async (send) => {
+          // If data was provided via SSR, use it directly without API call
+          if (ctx.sourceRegistryData?.dataSource === 'ssr') {
+            send({
+              type: 'LOADED_FROM_REGISTRY',
+              data: ctx.sourceRegistryData,
+            });
+            return;
+          }
           switch (ctx.sourceProvider) {
             case 'gist':
               const response = await fetch(
