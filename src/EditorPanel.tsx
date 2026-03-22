@@ -1,9 +1,7 @@
-import { AddIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
   HStack,
-  IconProps,
   Text,
   Tooltip,
 } from '@chakra-ui/react';
@@ -17,7 +15,7 @@ import { createModel } from 'xstate/lib/model';
 import { useAuth } from './authContext';
 import { CommandPalette } from './CommandPalette';
 import { useEmbed } from './embedContext';
-import { ForkIcon, MagicIcon, SaveIcon } from './Icons';
+import { MagicIcon } from './Icons';
 import { notifMachine } from './notificationMachine';
 import { parseMachines } from './parseMachine';
 import { useSimulationMode } from './SimulationContext';
@@ -325,49 +323,7 @@ const editorPanelMachine = editorPanelModel.createMachine(
   },
 );
 
-export type SourceOwnershipStatus =
-  | 'user-owns-source'
-  | 'no-source'
-  | 'user-does-not-own-source';
 
-const getSourceOwnershipStatus = (sourceState: SourceMachineState) => {
-  let sourceStatus: SourceOwnershipStatus = 'no-source';
-
-  if (!sourceState.matches('no_source')) {
-    if (
-      sourceState.context.loggedInUserId ===
-      sourceState.context.sourceRegistryData?.project?.owner?.id
-    ) {
-      sourceStatus = 'user-owns-source';
-    } else {
-      sourceStatus = 'user-does-not-own-source';
-    }
-  }
-
-  return sourceStatus;
-};
-
-const getPersistTextAndIcon = (
-  isSignedOut: boolean,
-  sourceOwnershipStatus: SourceOwnershipStatus,
-): { text: string; Icon: React.FC<IconProps> } => {
-  if (isSignedOut) {
-    switch (sourceOwnershipStatus) {
-      case 'no-source':
-        return { text: 'Login to save', Icon: SaveIcon };
-      case 'user-does-not-own-source':
-      case 'user-owns-source':
-        return { text: 'Login to fork', Icon: ForkIcon };
-    }
-  }
-  switch (sourceOwnershipStatus) {
-    case 'no-source':
-    case 'user-owns-source':
-      return { text: 'Save', Icon: SaveIcon };
-    case 'user-does-not-own-source':
-      return { text: 'Fork', Icon: ForkIcon };
-  }
-};
 
 export const EditorPanel: React.FC<{
   onSave: () => void;
@@ -385,14 +341,7 @@ export const EditorPanel: React.FC<{
   );
   const [sourceState] = useActor(sourceService);
 
-  const sourceOwnershipStatus = getSourceOwnershipStatus(sourceState);
-
   const simulationMode = useSimulationMode();
-
-  const persistMeta = getPersistTextAndIcon(
-    authState.matches('signed_out'),
-    sourceOwnershipStatus,
-  );
 
   const value = getEditorValue(sourceState);
 
@@ -483,58 +432,7 @@ export const EditorPanel: React.FC<{
                     </Button>
                   </Tooltip>
                 )}
-                {!embed?.isEmbedded && (
-                  <Tooltip
-                    bg="black"
-                    color="white"
-                    label={`${getPlatformMetaKeyLabel()} + S`}
-                    closeDelay={500}
-                  >
-                    <Button
-                      isLoading={sourceState.hasTag('persisting')}
-                      disabled={sourceState.hasTag('persisting')}
-                      onClick={() => {
-                        onSave();
-                      }}
-                      leftIcon={
-                        <persistMeta.Icon
-                          fill="gray.200"
-                          height="16px"
-                          width="16px"
-                        />
-                      }
-                      variant="outline"
-                    >
-                      {persistMeta.text}
-                    </Button>
-                  </Tooltip>
-                )}
-                {sourceOwnershipStatus === 'user-owns-source' &&
-                  !embed?.isEmbedded && (
-                    <Button
-                      disabled={sourceState.hasTag('forking')}
-                      isLoading={sourceState.hasTag('forking')}
-                      onClick={() => {
-                        onFork();
-                      }}
-                      leftIcon={
-                        <ForkIcon fill="gray.200" height="16px" width="16px" />
-                      }
-                      variant="outline"
-                    >
-                      Fork
-                    </Button>
-                  )}
               </HStack>
-              {sourceOwnershipStatus !== 'no-source' && !embed?.isEmbedded && (
-                <Button
-                  leftIcon={<AddIcon fill="gray.200" />}
-                  onClick={onCreateNew}
-                  variant="outline"
-                >
-                  New
-                </Button>
-              )}
             </HStack>
           </>
         )}

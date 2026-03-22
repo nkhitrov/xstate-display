@@ -31,23 +31,17 @@ export const AppHead = ({ importElk = true, ...props }: AppHeadProps) => {
       <title>{props.title}</title>
       <meta name="description" content={props.description} />
       {importElk && (
-        <script src="https://unpkg.com/elkjs@0.7.1/lib/elk.bundled.js"></script>
+        <script src="/viz/elk.bundled.js"></script>
       )}
 
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={`https://stately.ai/viz`} />
-      <meta property="og:title" content={props.ogTitle} />
+<meta property="og:title" content={props.ogTitle} />
       <meta property="og:description" content={props.description} />
       {props.ogImageUrl && featureFlags['Show OG Images'] && (
         <meta property="og:image" content={props.ogImageUrl} />
       )}
 
       <meta property="twitter:card" content="summary_large_image" />
-      <script
-        async
-        data-domain="stately.ai"
-        src="https://plausible.io/js/script.tagged-events.js"
-      />
     </Head>
   );
 };

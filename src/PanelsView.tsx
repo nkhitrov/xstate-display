@@ -1,8 +1,7 @@
-import { ExternalLinkIcon, SettingsIcon } from '@chakra-ui/icons';
+import { SettingsIcon } from '@chakra-ui/icons';
 import {
   Badge,
   BoxProps,
-  Button,
   Tab,
   TabList,
   TabPanel,
@@ -15,7 +14,6 @@ import { ActorsPanel, selectServices } from './ActorsPanel';
 import { EditorPanel } from './EditorPanel';
 import { useEmbed } from './embedContext';
 import { EventsPanel } from './EventsPanel';
-import { Login } from './Login';
 import { ResizableBox } from './ResizableBox';
 import { SettingsPanel } from './SettingsPanel';
 import { useSimulation } from './SimulationContext';
@@ -73,22 +71,6 @@ export const PanelsView = (props: BoxProps) => {
             <Tab marginLeft="auto" marginRight="2">
               <SettingsIcon aria-label="Settings" />
             </Tab>
-          )}
-          {!embed?.isEmbedded && <Login />}
-          {embed?.isEmbedded && embed.showOriginalLink && embed.originalUrl && (
-            <Button
-              height="100%"
-              rounded="none"
-              marginLeft="auto"
-              colorScheme="blue"
-              as="a"
-              target="_blank"
-              rel="noopener noreferer nofollow"
-              href={embed?.originalUrl}
-              leftIcon={<ExternalLinkIcon />}
-            >
-              Open in Stately.ai/viz
-            </Button>
           )}
         </TabList>
 

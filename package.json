@@ -37,7 +37,7 @@
     "start": "next -p 3000",
     "build": "next build",
     "serve": "next start",
-    "postinstall": "patch-package && mkdir -p public/monaco-editor && cp -r node_modules/monaco-editor public",
+    "postinstall": "patch-package && mkdir -p public/monaco-editor && cp -r node_modules/monaco-editor public && cp node_modules/elkjs/lib/elk.bundled.js public/ && mkdir -p public/prettier && cp node_modules/prettier/standalone.js public/prettier/ && cp node_modules/prettier/parser-typescript.js public/prettier/",
     "cypress:open": "cypress open",
     "cypress:test": "cypress run",
     "jest": "jest",

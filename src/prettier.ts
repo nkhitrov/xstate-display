@@ -39,8 +39,8 @@ const Prettier = () => {
     window.define = () => {};
 
     await Promise.all([
-      loadScript('https://unpkg.com/prettier@2.3.2/standalone.js'),
-      loadScript('https://unpkg.com/prettier@2.3.2/parser-typescript.js'),
+      loadScript('/viz/prettier/standalone.js'),
+      loadScript('/viz/prettier/parser-typescript.js'),
     ]);
 
     window.define = define;

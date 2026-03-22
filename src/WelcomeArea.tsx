@@ -13,7 +13,7 @@ import { useMachine, useSelector } from '@xstate/react';
 import React from 'react';
 import { createMachine } from 'xstate';
 import { useAuth } from './authContext';
-import { BoltIcon, LightbulbIcon, MagicIcon } from './Icons';
+import { BoltIcon, LightbulbIcon } from './Icons';
 import { Overlay } from './Overlay';
 import { getSourceActor } from './sourceMachine';
 
@@ -138,67 +138,7 @@ export const WelcomeArea = () => {
                 <Text color="gray.400" size="md">
                   Build state machine diagrams using XState.
                 </Text>
-                <Stack backgroundColor="gray.700" spacing="5" padding="6">
-                  <Text>
-                    This legacy visualizer is deprecated and is no longer
-                    maintained.
-                  </Text>
-                  <Text>
-                    For the best experience,{' '}
-                    <Link
-                      href="https://stately.ai/editor?source=viz"
-                      target="_blank"
-                      color="blue.300"
-                      className="plausible-event-name=viz+stately-editor-button"
-                    >
-                      use our new Stately editor
-                    </Link>{' '}
-                    to build and visualize state machines with drag-and-drop, AI
-                    assistance, exporting to XState V5, and more.
-                  </Text>
-                  <Text>
-                    Full parity between the new Stately editor and this
-                    visualizer is coming soon.
-                    <Link
-                      href="https://stately.ai/docs/visualizer"
-                      target="_blank"
-                      color="blue.300"
-                      className="plausible-event-name=viz+docs"
-                    >
-                      {' '}
-                      Read our docs for more information on the differences
-                      between the legacy visualizer and new visualizer.
-                    </Link>
-                  </Text>
-                  <Text>
-                    <Button
-                      {...buttonStyleProps}
-                      as={Link}
-                      href="https://stately.ai/editor?source=viz"
-                      rel="noreferrer"
-                      target="_blank"
-                      bg="orange.600"
-                      maxWidth="auto"
-                      className="plausible-event-name=viz+new-visualizer"
-                    >
-                      <HStack spacing="4">
-                        <MagicIcon color="gray.200" h="6" w="6" />
-                        <Text color="gray.100">
-                          Use the new Stately visualizer
-                        </Text>
-                      </HStack>
-                    </Button>
-                  </Text>
-                </Stack>
                 <Stack spacing="3">
-                  <Heading
-                    size="md"
-                    paddingTop="3"
-                    fontWeight="400"
-                    color="gray.400"
-                  >
-                    Start using legacy visualizer
-                  </Heading>
                   <Button
                     {...buttonStyleProps}
                     onClick={() => send('CLICK_SEE_EXAMPLE')}

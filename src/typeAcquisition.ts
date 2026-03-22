@@ -461,33 +461,14 @@ interface ATAConfig {
  * Pseudo in-browser type acquisition tool, uses a
  */
 export const detectNewImportsToAcquireTypeFor = async (
-  sourceCode: string,
-  userAddLibraryToRuntime: AddLibToRuntimeFunc,
-  fetcher = fetch,
-  playgroundConfig: {
+  _sourceCode: string,
+  _userAddLibraryToRuntime: AddLibToRuntimeFunc,
+  _fetcher = fetch,
+  _playgroundConfig: {
     logger: Logger;
   },
 ) => {
-  // Wrap the runtime func with our own side-effect for visibility
-  const addLibraryToRuntime = (code: string, path: string) => {
-    globalishObj.typeDefinitions[path] = code;
-    userAddLibraryToRuntime(code, path);
-  };
-
-  // Basically start the recursion with an undefined module
-  const config: ATAConfig = {
-    sourceCode,
-    addLibraryToRuntime,
-    fetcher,
-    logger: playgroundConfig.logger,
-  };
-  const results = getDependenciesForModule(
-    sourceCode,
-    undefined,
-    'playground.ts',
-    config,
-  );
-  return results;
+  // no-op: type acquisition disabled
 };
 
 /**

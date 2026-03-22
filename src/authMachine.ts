@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+// import { createClient } from '@supabase/supabase-js';
 import { NextRouter } from 'next/router';
 import {
   ActorRefFrom,
@@ -28,13 +28,7 @@ const trackApplicationLoad = once((_, event) => {
 
 const authModel = createModel(
   {
-    client: createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_API_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_API_KEY,
-      {
-        localStorage: storage,
-      },
-    ),
+    client: null as any,
     notifRef: null! as ActorRefFrom<typeof notifMachine>,
     sourceRef: null as SourceMachineActorRef | null,
     loggedInUserData: null as LoggedInUser | null,
@@ -70,17 +64,8 @@ export const createAuthMachine = (params: {
     }),
     invoke: {
       // this wouldn't be needed if only internal Supabase's `getSessionFromUrl` (happening after redirect) would be synchronous
-      src: (ctx) => (sendBack) => {
-        if (isSignedIn()) {
-          sendBack({ type: 'SIGNED_IN' });
-        }
-        ctx.client.auth.onAuthStateChange((event, session) => {
-          // we only care about SIGNED_IN because signing out is "synchronous" from our perspective anyway
-          // and is handled in response to user actions
-          if (event === 'SIGNED_IN') {
-            sendBack({ type: 'SIGNED_IN' });
-          }
-        });
+      src: (_ctx) => (_sendBack) => {
+        // Auth disabled in offline mode
       },
     },
     on: {
@@ -96,7 +81,7 @@ export const createAuthMachine = (params: {
             return {
               sourceRef: spawn(
                 makeSourceMachine({
-                  auth: ctx.client.auth,
+                  auth: null as any,
                   sourceRegistryData: params.sourceRegistryData,
                   router: params.router,
                   isEmbedded: params.isEmbbeded,
